@@ -1,0 +1,7 @@
+*.csv
+*.xls
+*.session*
+*.session
+*.sql
+*/*/__pycache__
+.*~lock.*
