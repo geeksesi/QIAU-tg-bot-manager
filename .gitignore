@@ -5,3 +5,4 @@
 *.sql
 */*/__pycache__
 .*~lock.*
+.env.json
