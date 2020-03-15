@@ -3,8 +3,8 @@ from App.Model.Model import Model
 
 
 class Controller:
-    def __init__(self):
-        self.model = Model()
+    def __init__(self, db_name):
+        self.model = Model(db_name)
 
     def do_job(self, string, chat_id):
         if not self.check_length(string):

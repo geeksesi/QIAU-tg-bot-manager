@@ -2,8 +2,8 @@ import sqlite3
 
 
 class Model:
-    def __init__(self):
-        self.db = sqlite3.connect('QIAU_CEIT.sql')
+    def __init__(self, db_name):
+        self.db = sqlite3.connect(db_name)
 
     def check_code(self, code):
         c = self.db.cursor()
