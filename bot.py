@@ -33,8 +33,13 @@ async def main():
 @client.on(events.NewMessage)
 async def my_event_handler(event):
     await event.message.mark_read()
-    # if 'hello' in event.raw_text:
-    #     await event.reply('لطفا شماره دانشجوییتون رو وارد کنید')
+    if event.chat_id == -1001166405576:
+        return
+    if event.from_id in admins:
+        admin_answer = app.admin_job(event.raw_text)
+        await event.reply(admin_answer)
+        return
+
     check_code = app.do_job(event.raw_text, event.from_id)
 
     if check_code == "code 1":

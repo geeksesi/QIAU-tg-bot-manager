@@ -51,3 +51,15 @@ class Controller:
             await client.kick_participant(channel, user)
         except ProcessLookupError:
             print("nothing")
+
+    def admin_job(self, message):
+        exploded = message.split(' ')
+        if exploded[0] != "del":
+            return "undefined message"
+        if not self.check_length(exploded[1]):
+            return "undefined code"
+        code_md5 = self.make_md5(exploded[1])
+        delete_status = self.model.unaccept(code_md5)
+        if delete_status:
+            return "Success"
+        return "Database Error"

@@ -51,3 +51,14 @@ class Model:
         if check_result:
             return True
         return False
+
+    def unaccept(self, code):
+        try:
+            c = self.db.cursor()
+            check_query = "DELETE FROM accepted WHERE code='%s'" % str(code)
+            c.execute(check_query)
+            self.db.commit()
+            c.close()
+            return True
+        except sqlite3.IntegrityError as e:
+            return e
