@@ -1,15 +1,18 @@
-import hashlib
 from App.Model.Model import Model
+from App.Controller.Admin import Admin
+from App.Controller.Functions import Functions
 
 
 class Controller:
     def __init__(self, db_name):
         self.model = Model(db_name)
+        self.functions = Functions()
+        self.admin = Admin(self.model, self.functions)
 
     def do_job(self, string, chat_id):
-        if not self.check_length(string):
+        if not self.functions.student_code_check_length(string):
             return "code 1"
-        code = self.make_md5(string)
+        code = self.functions.make_md5(string)
         student_type = self.model.check_code(code)
         if not student_type:
             return "code 2"
@@ -21,14 +24,6 @@ class Controller:
         if not self.model.new_accept(code, student_type, chat_id):
             return False
         return student_type
-
-    def check_length(self, string):
-        if len(string) == 9:
-            return True
-        return False
-
-    def make_md5(self, string):
-        return hashlib.md5(string.encode('utf-8')).hexdigest()
 
     async def group_check(self, channel, client, me_id, admins):
         print("i'm here")
@@ -52,14 +47,5 @@ class Controller:
         except ProcessLookupError:
             print("nothing")
 
-    def admin_job(self, message):
-        exploded = message.split(' ')
-        if exploded[0] != "del":
-            return "undefined message"
-        if not self.check_length(exploded[1]):
-            return "undefined code"
-        code_md5 = self.make_md5(exploded[1])
-        delete_status = self.model.unaccept(code_md5)
-        if delete_status:
-            return "Success"
-        return "Database Error"
+    def admin_event(self, event):
+        return self.admin.event_handle(event)

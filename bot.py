@@ -17,11 +17,12 @@ bot = Bot(client, admins, db_name)
 
 @client.on(events.NewMessage(incoming=True))
 async def message_event(event):
+    print(event.raw_text)
     await bot.my_event_handler(event)
 
 
-with client:
-    client.loop.run_until_complete(bot.cron_job())
+# with client:
+#     client.loop.run_until_complete(bot.cron_job())
 
 client.start()
 client.run_until_disconnected()
